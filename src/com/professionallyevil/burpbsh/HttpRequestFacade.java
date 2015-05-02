@@ -75,12 +75,14 @@ public class HttpRequestFacade {
         byte[] request = modifiedRequest==null? msg.getRequest():modifiedRequest;
         Parameter param = new Parameter(name, value, IParameter.PARAM_COOKIE);
         modifiedRequest = callbacks.getHelpers().updateParameter(request, param);
+        headerIndices.clear();
     }
 
     public void removeCookie(String name) {
         byte[] request = modifiedRequest==null? msg.getRequest():modifiedRequest;
         Parameter param = new Parameter(name, "", IParameter.PARAM_COOKIE);
         modifiedRequest = callbacks.getHelpers().removeParameter(request, param);
+        headerIndices.clear();
     }
 
     public URL getURL(){
@@ -99,6 +101,7 @@ public class HttpRequestFacade {
 
     public void toggleMethod(){
         modifiedRequest = callbacks.getHelpers().toggleRequestMethod(modifiedRequest==null? msg.getRequest():modifiedRequest);
+        headerIndices.clear();
     }
 
     public String getHeader(String name){
