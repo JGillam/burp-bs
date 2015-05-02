@@ -6,14 +6,21 @@ import burp.IParameter;
 import burp.IRequestInfo;
 
 import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class HttpRequestFacade {
 
+    public final static boolean DEBUG = false;
     IBurpExtenderCallbacks callbacks;
     IHttpRequestResponse msg;
     byte[] modifiedRequest = null;
     IRequestInfo requestInfo = null;
+    List<String> headers = null;
+    Map<String,Integer> headerIndices = new HashMap<String,Integer>(10);
 
     public HttpRequestFacade(IBurpExtenderCallbacks callbacks, IHttpRequestResponse msg) {
         this.callbacks = callbacks;
@@ -38,6 +45,28 @@ public class HttpRequestFacade {
         modifiedRequest = callbacks.getHelpers().updateParameter(request, param);
     }
 
+    public String getCookie(String name){
+        byte[] request = modifiedRequest==null? msg.getRequest():modifiedRequest;
+        IParameter param = callbacks.getHelpers().getRequestParameter(request, name);
+        if(param.getType() == IParameter.PARAM_COOKIE) {
+            return param.getValue();
+        } else {
+            return "";
+        }
+    }
+
+    public void setCookie(String name, String value) {
+        byte[] request = modifiedRequest==null? msg.getRequest():modifiedRequest;
+        Parameter param = new Parameter(name, value, IParameter.PARAM_COOKIE);
+        modifiedRequest = callbacks.getHelpers().updateParameter(request, param);
+    }
+
+    public void removeCookie(String name) {
+        byte[] request = modifiedRequest==null? msg.getRequest():modifiedRequest;
+        Parameter param = new Parameter(name, "", IParameter.PARAM_COOKIE);
+        modifiedRequest = callbacks.getHelpers().removeParameter(request, param);
+    }
+
     public URL getURL(){
         if(requestInfo == null){
             requestInfo = callbacks.getHelpers().analyzeRequest(msg);
@@ -45,7 +74,87 @@ public class HttpRequestFacade {
         return requestInfo.getUrl();
     }
 
+    public String getMethod(){
+        if(requestInfo == null){
+            requestInfo = callbacks.getHelpers().analyzeRequest(msg);
+        }
+        return requestInfo.getMethod();
+    }
+
+    public void toggleMethod(){
+        modifiedRequest = callbacks.getHelpers().toggleRequestMethod(modifiedRequest==null? msg.getRequest():modifiedRequest);
+    }
+
+    public String getHeader(String name){
+        initHeaders();
+        //if(!name.endsWith(":")) {
+        //    name = name + ":";
+        //}
+
+        if (headerIndices.containsKey(name)) {
+            return headers.get(headerIndices.get(name)).substring(name.length()+2).trim();
+        }else {
+            return null;
+        }
+    }
+
+
+
+    public void setHeader(String name, String value) {
+        initHeaders();
+        if (headerIndices.containsKey(name)) {  // set existing header
+            int index = headerIndices.get(name);
+            headers.set(index, name+": "+value);
+        } else { // add new header
+            headers.add(name+": "+value);
+        }
+
+        if(requestInfo == null){
+            requestInfo = callbacks.getHelpers().analyzeRequest(msg);
+        }
+        byte[] request = modifiedRequest==null? msg.getRequest():modifiedRequest;
+        byte[] body = Arrays.copyOfRange(request, requestInfo.getBodyOffset(), request.length);
+       modifiedRequest =  callbacks.getHelpers().buildHttpMessage(headers, body);
+    }
+
+
     public byte[] getModifiedRequest(){
         return modifiedRequest;
+    }
+
+    private void debugOut(String msg) {
+        if(DEBUG) {
+            callbacks.printOutput(msg);
+        }
+
+    }
+
+    private void initHeaders() {
+        if(requestInfo == null){
+            requestInfo = callbacks.getHelpers().analyzeRequest(msg);
+        }
+        if(headers == null || headers.size() == 0) {
+            headers = requestInfo.getHeaders();
+            headerIndices.clear();
+        }
+
+        indexHeaders();
+    }
+
+    private void indexHeaders() {
+        debugOut("Checking index...");
+        if(headerIndices.size() == 0) {
+            for(int i=0;i<headers.size();i++) {
+                String header = headers.get(i);
+                debugOut("Indexing header: " + header);
+                int delimit = header.indexOf(": ");
+                if (delimit > 0) {
+                    headerIndices.put(header.substring(0,delimit), i);
+                    debugOut("Added header to index: " + header.substring(0, delimit));
+                }
+            }
+        } else {
+            debugOut("Header index > 0");
+        }
     }
 }

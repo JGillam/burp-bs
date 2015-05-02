@@ -22,7 +22,7 @@ public class BshExtender implements IBurpExtender, ITab, IContextMenuFactory, IH
     private IHttpRequestResponse testRequest = null;
     private IBurpExtenderCallbacks callbacks;
     private Interpreter interpreter;
-    private static final String VERSION = "0.1";
+    private static final String VERSION = "0.2.0";
 
     public BshExtender() {
         buttonTest.addActionListener(new ActionListener() {
