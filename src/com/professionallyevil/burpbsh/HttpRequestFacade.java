@@ -30,15 +30,15 @@ import java.util.Map;
 
 public class HttpRequestFacade {
 
-    public final static boolean DEBUG = false;
-    IBurpExtenderCallbacks callbacks;
-    IHttpRequestResponse msg;
-    byte[] modifiedRequest = null;
-    IRequestInfo requestInfo = null;
-    List<String> headers = null;
-    Map<String,Integer> headerIndices = new HashMap<String,Integer>(10);
+    private final static boolean DEBUG = false;
+    private IBurpExtenderCallbacks callbacks;
+    private IHttpRequestResponse msg;
+    private byte[] modifiedRequest = null;
+    private IRequestInfo requestInfo = null;
+    private List<String> headers = null;
+    private Map<String,Integer> headerIndices = new HashMap<String,Integer>(10);
 
-    public HttpRequestFacade(IBurpExtenderCallbacks callbacks, IHttpRequestResponse msg) {
+    HttpRequestFacade(IBurpExtenderCallbacks callbacks, IHttpRequestResponse msg) {
         this.callbacks = callbacks;
         this.msg = msg;
     }
@@ -117,8 +117,6 @@ public class HttpRequestFacade {
         }
     }
 
-
-
     public void setHeader(String name, String value) {
         initHeaders();
         if (headerIndices.containsKey(name)) {  // set existing header
@@ -165,7 +163,7 @@ public class HttpRequestFacade {
 //    }
 
 
-    public byte[] getModifiedRequest(){
+    byte[] getModifiedRequest(){
         return modifiedRequest;
     }
 
