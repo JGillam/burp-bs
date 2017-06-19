@@ -136,6 +136,34 @@ public class HttpRequestFacade {
        modifiedRequest =  callbacks.getHelpers().buildHttpMessage(headers, body);
     }
 
+//    public String[] getPathParts() {
+//        if(requestInfo == null) {
+//            requestInfo = callbacks.getHelpers().analyzeRequest(msg);
+//        }
+//
+//        URL url = requestInfo.getUrl();
+//        return url.getPath().split("/");
+//    }
+//
+//    public void setPathPart(int index, String value) {
+//        String[] parts = getPathParts();
+//        if (parts.length > index) {
+//            parts[index] = value;
+//        }
+//
+//
+//        StringBuilder buf = new StringBuilder();
+//        for (String part : parts) {
+//            buf.append(part);
+//            buf.append('/');
+//        }
+//        byte[] request = modifiedRequest==null? msg.getRequest():modifiedRequest;
+//
+//        modifiedRequest =  callbacks.getHelpers().
+//
+//
+//    }
+
 
     public byte[] getModifiedRequest(){
         return modifiedRequest;

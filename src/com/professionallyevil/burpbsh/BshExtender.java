@@ -24,6 +24,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,10 +39,11 @@ public class BshExtender implements IBurpExtender, ITab, IContextMenuFactory, IH
     private JButton buttonTest;
     private JCheckBox enableForRequestsCheckBox;
     private JTextArea txtTestModified;
+    private JLabel apiHelpLink;
     private IHttpRequestResponse testRequest = null;
     private IBurpExtenderCallbacks callbacks;
     private Interpreter interpreter;
-    private static final String VERSION = "0.2.0";
+    private static final String VERSION = "0.2.1";
 
     public BshExtender() {
         buttonTest.addActionListener(new ActionListener() {
@@ -68,6 +73,19 @@ public class BshExtender implements IBurpExtender, ITab, IContextMenuFactory, IH
                 updateProxyFilter();
             }
         });
+        apiHelpLink.addMouseListener(new MouseAdapter() {
+        });
+
+        apiHelpLink.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                executeLink("http://burpco2.com/burp-bs.html");
+            }
+        });
+
+        txtScript.setTabSize(2);
+        BeanScriptDocListener docListener = new BeanScriptDocListener(txtScript);
+        txtScript.getDocument().addDocumentListener(docListener);
     }
 
     @Override
@@ -164,6 +182,18 @@ public class BshExtender implements IBurpExtender, ITab, IContextMenuFactory, IH
 
             } catch (EvalError evalError) {
                 callbacks.printError(evalError.getErrorText());
+            }
+        }
+    }
+
+    private void executeLink(String urlLink) {
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            URI uri = URI.create(urlLink);
+            try {
+                Desktop.getDesktop().browse(uri);
+            } catch (IOException e) {
+                //e.printStackTrace();
+                callbacks.printError("Link could not be followed: " + urlLink);
             }
         }
     }
