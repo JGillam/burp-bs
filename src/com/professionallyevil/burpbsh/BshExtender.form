@@ -8,111 +8,244 @@
     <properties/>
     <border type="none"/>
     <children>
-      <scrollpane id="b7b22">
+      <tabbedpane id="91188">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="5" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
         </constraints>
         <properties/>
-        <border type="none" title="Script"/>
+        <border type="none"/>
         <children>
-          <component id="d0f6c" class="javax.swing.JTextArea" binding="txtScript">
-            <constraints/>
-            <properties/>
-          </component>
-        </children>
-      </scrollpane>
-      <hspacer id="5dd12">
-        <constraints>
-          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </hspacer>
-      <grid id="64ae7" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="0" bottom="0" right="0"/>
-        <constraints>
-          <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties/>
-        <border type="none" title="Test Message"/>
-        <children>
-          <splitpane id="fb093">
+          <grid id="4d133" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                <preferred-size width="200" height="200"/>
-              </grid>
+              <tabbedpane title="Request"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
-              <scrollpane id="d2f64">
+              <scrollpane id="b7b22">
                 <constraints>
-                  <splitpane position="left"/>
+                  <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
-                <border type="none" title="Original"/>
+                <border type="none" title="Script"/>
                 <children>
-                  <component id="b3ff7" class="javax.swing.JTextArea" binding="txtTestRequest">
+                  <component id="d0f6c" class="javax.swing.JTextArea" binding="txtScript">
                     <constraints/>
-                    <properties>
-                      <editable value="false"/>
-                      <text value="(hint: right-click a request to send it here for testing)"/>
-                    </properties>
+                    <properties/>
                   </component>
                 </children>
               </scrollpane>
-              <scrollpane id="aff16">
+              <hspacer id="5dd12">
                 <constraints>
-                  <splitpane position="right"/>
+                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <grid id="64ae7" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
-                <border type="none" title="Modified"/>
+                <border type="none" title="Test Message"/>
                 <children>
-                  <component id="b25e6" class="javax.swing.JTextArea" binding="txtTestModified">
-                    <constraints/>
-                    <properties>
-                      <editable value="false"/>
-                      <text value="(hint: Press &quot;test&quot; button below.  Results of test will be displayed here.)"/>
-                    </properties>
-                  </component>
+                  <splitpane id="fb093">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                        <preferred-size width="200" height="200"/>
+                      </grid>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <scrollpane id="d2f64">
+                        <constraints>
+                          <splitpane position="left"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none" title="Original"/>
+                        <children>
+                          <component id="b3ff7" class="javax.swing.JTextArea" binding="txtTestRequest">
+                            <constraints/>
+                            <properties>
+                              <editable value="false"/>
+                              <text value="(hint: right-click a request to send it here for testing)"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </scrollpane>
+                      <scrollpane id="aff16">
+                        <constraints>
+                          <splitpane position="right"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none" title="Modified"/>
+                        <children>
+                          <component id="b25e6" class="javax.swing.JTextArea" binding="txtTestModified">
+                            <constraints/>
+                            <properties>
+                              <editable value="false"/>
+                              <text value="(hint: Press &quot;test&quot; button below.  Results of test will be displayed here.)"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </scrollpane>
+                    </children>
+                  </splitpane>
                 </children>
-              </scrollpane>
+              </grid>
+              <component id="1602" class="javax.swing.JCheckBox" binding="enableForRequestsCheckBox" default-binding="true">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Enable for Requests"/>
+                </properties>
+              </component>
+              <component id="59114" class="javax.swing.JButton" binding="buttonTest">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Test"/>
+                </properties>
+              </component>
+              <vspacer id="a1d0f">
+                <constraints>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <hspacer id="9c803">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <component id="ce51a" class="javax.swing.JLabel" binding="apiHelpLink">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="&lt;html&gt;&lt;a href=&quot;http://http://burpco2.com/burp-bs.html&quot;&gt;API Help&lt;/a&gt;&lt;/html&gt;"/>
+                </properties>
+              </component>
             </children>
-          </splitpane>
+          </grid>
+          <grid id="5ef2" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Response"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="bed40">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none" title="Script"/>
+                <children>
+                  <component id="c2767" class="javax.swing.JTextArea" binding="txtResponseScript">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+              <grid id="a1f12" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none" title="Test Message"/>
+                <children>
+                  <splitpane id="2def1">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                        <preferred-size width="200" height="200"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <dividerLocation value="150"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <scrollpane id="36a96">
+                        <constraints>
+                          <splitpane position="left"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none" title="Original"/>
+                        <children>
+                          <component id="e97c7" class="javax.swing.JTextArea" binding="txtTestResponse">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                      <scrollpane id="b0245">
+                        <constraints>
+                          <splitpane position="right"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none" title="Modified"/>
+                        <children>
+                          <component id="58ec" class="javax.swing.JTextArea" binding="txtTestResponseModified">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                    </children>
+                  </splitpane>
+                </children>
+              </grid>
+              <component id="51e7b" class="javax.swing.JCheckBox" binding="enableForResponsesCheckBox">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Enable for Responses"/>
+                </properties>
+              </component>
+              <hspacer id="dda56">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <component id="79f8b" class="javax.swing.JButton" binding="buttonResponseTest">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Test"/>
+                </properties>
+              </component>
+              <component id="ebdcf" class="javax.swing.JLabel" binding="apiHelpLink2">
+                <constraints>
+                  <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <horizontalAlignment value="10"/>
+                  <text value="&lt;html&gt;&lt;a href=&quot;http://http://burpco2.com/burp-bs.html&quot;&gt;API Help&lt;/a&gt;&lt;/html&gt;"/>
+                </properties>
+              </component>
+              <hspacer id="47422">
+                <constraints>
+                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <vspacer id="868d9">
+                <constraints>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+            </children>
+          </grid>
         </children>
-      </grid>
-      <component id="1602" class="javax.swing.JCheckBox" binding="enableForRequestsCheckBox" default-binding="true">
-        <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Enable for Requests"/>
-        </properties>
-      </component>
-      <component id="59114" class="javax.swing.JButton" binding="buttonTest">
-        <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Test"/>
-        </properties>
-      </component>
-      <vspacer id="a1d0f">
-        <constraints>
-          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </vspacer>
-      <hspacer id="9c803">
-        <constraints>
-          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </hspacer>
-      <component id="ce51a" class="javax.swing.JLabel" binding="apiHelpLink">
-        <constraints>
-          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="&lt;html&gt;&lt;a href=&quot;http://http://burpco2.com/burp-bs.html&quot;&gt;API Help&lt;/a&gt;&lt;/html&gt;"/>
-        </properties>
-      </component>
+      </tabbedpane>
     </children>
   </grid>
 </form>

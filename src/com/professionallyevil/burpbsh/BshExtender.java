@@ -40,10 +40,17 @@ public class BshExtender implements IBurpExtender, ITab, IContextMenuFactory, IH
     private JCheckBox enableForRequestsCheckBox;
     private JTextArea txtTestModified;
     private JLabel apiHelpLink;
+    private JTextArea txtResponseScript;
+    private JCheckBox enableForResponsesCheckBox;
+    private JButton buttonResponseTest;
+    private JTextArea txtTestResponseModified;
+    private JTextArea txtTestResponse;
+    private JLabel apiHelpLink2;
     private IHttpRequestResponse testRequest = null;
+    private IHttpRequestResponse testResponse = null;
     private IBurpExtenderCallbacks callbacks;
     private Interpreter interpreter;
-    private static final String VERSION = "0.2.1";
+    private static final String VERSION = "0.3.0";
 
     public BshExtender() {
         buttonTest.addActionListener(new ActionListener() {
@@ -67,12 +74,42 @@ public class BshExtender implements IBurpExtender, ITab, IContextMenuFactory, IH
                 }
             }
         });
+        buttonResponseTest.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(testResponse!=null) {
+                    try {
+                        HttpResponseFacade response = new HttpResponseFacade(callbacks, testResponse);
+                        interpreter.set("response", response);
+                        interpreter.eval(txtResponseScript.getText());
+                        byte[] modifiedMsg = response.getModifiedResponse();
+                        if(modifiedMsg == null) {
+                            txtTestResponseModified.setText("(not modified)");
+                        } else {
+                            txtTestResponseModified.setText(callbacks.getHelpers().bytesToString(modifiedMsg));
+                        }
+                    } catch (EvalError evalError) {
+                        txtTestModified.setText("*** Error in line "+evalError.getErrorLineNumber()+": "+evalError.getErrorText());
+                        callbacks.printError("bsh error: " + evalError.getErrorText());
+                    }
+                }
+            }
+        });
+
         enableForRequestsCheckBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateProxyFilter();
             }
         });
+
+        enableForResponsesCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateProxyFilter();
+            }
+        });
+
         apiHelpLink.addMouseListener(new MouseAdapter() {
         });
 
@@ -86,6 +123,10 @@ public class BshExtender implements IBurpExtender, ITab, IContextMenuFactory, IH
         txtScript.setTabSize(2);
         BeanScriptDocListener docListener = new BeanScriptDocListener(txtScript);
         txtScript.getDocument().addDocumentListener(docListener);
+
+        txtResponseScript.setTabSize(2);
+        BeanScriptDocListener docListener2 = new BeanScriptDocListener(txtResponseScript);
+        txtResponseScript.getDocument().addDocumentListener(docListener2);
     }
 
     @Override
@@ -102,6 +143,7 @@ public class BshExtender implements IBurpExtender, ITab, IContextMenuFactory, IH
             callbacks.printError("Error including utils for bsh scripts. "+ evalError.getErrorText());
         }
         buttonTest.setEnabled(false);
+        buttonResponseTest.setEnabled(false);
 
         callbacks.printOutput("Burp BeanShell extension started.  Version: " + VERSION);
         updateProxyFilter();
@@ -123,12 +165,19 @@ public class BshExtender implements IBurpExtender, ITab, IContextMenuFactory, IH
         buttonTest.setEnabled(true);
     }
 
+    private void setTestResponse(IHttpRequestResponse msg) {
+        this.testResponse = msg;
+        txtTestResponse.setText(callbacks.getHelpers().bytesToString(msg.getResponse()));
+        buttonResponseTest.setEnabled(true);
+    }
+
     @Override
     public List<JMenuItem> createMenuItems(IContextMenuInvocation invocation) {
         final IHttpRequestResponse[] selectedMessages = invocation.getSelectedMessages();
 
         if (selectedMessages != null && selectedMessages.length > 0) {
             final List<IHttpRequestResponse> requestMessages = new ArrayList<IHttpRequestResponse>();
+            final List<IHttpRequestResponse> responseMessages = new ArrayList<>();
             List<JMenuItem> menuItems = new ArrayList<JMenuItem>();
 
             for (IHttpRequestResponse message : selectedMessages) {
@@ -136,14 +185,30 @@ public class BshExtender implements IBurpExtender, ITab, IContextMenuFactory, IH
                 if (request != null) {
                     requestMessages.add(message);
                 }
+
+                byte[] response = message.getResponse();
+                if (response != null) {
+                    responseMessages.add(message);
+                }
             }
 
             if (requestMessages.size() > 0) {
-                JMenuItem mi = new JMenuItem("Test in BS");
+                JMenuItem mi = new JMenuItem("Test request in BS");
                 mi.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         setTestRequest(requestMessages.get(0));
+                    }
+                });
+                menuItems.add(mi);
+            }
+
+            if (responseMessages.size() > 0) {
+                JMenuItem mi = new JMenuItem("Test response in BS");
+                mi.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        setTestResponse(responseMessages.get(0));
                     }
                 });
                 menuItems.add(mi);
@@ -157,10 +222,11 @@ public class BshExtender implements IBurpExtender, ITab, IContextMenuFactory, IH
 
     private void updateProxyFilter() {
         callbacks.removeHttpListener(this);
-        if (enableForRequestsCheckBox.isSelected()) {
+        if (enableForRequestsCheckBox.isSelected() || enableForResponsesCheckBox.isSelected()) {
             callbacks.printOutput("beanshell script filtering on all requests...");
             callbacks.registerHttpListener(this);
         }else {
+            callbacks.removeHttpListener(this);
             callbacks.printOutput("beanshell script not filtering on requests...");
         }
     }
@@ -180,6 +246,20 @@ public class BshExtender implements IBurpExtender, ITab, IContextMenuFactory, IH
                     callbacks.printOutput("Message updated.");
                 }
 
+            } catch (EvalError evalError) {
+                callbacks.printError(evalError.getErrorText());
+            }
+        } else if(!messageIsRequest && enableForResponsesCheckBox.isSelected()) {
+            HttpResponseFacade response = new HttpResponseFacade(callbacks, messageInfo);
+            try {
+                interpreter.set("response", response);
+                interpreter.eval(txtResponseScript.getText());
+
+                byte[] modifiedMsg = response.getModifiedResponse();
+                if(modifiedMsg != null) {
+                    messageInfo.setResponse(modifiedMsg);
+                    callbacks.printOutput("Message updated.");
+                }
             } catch (EvalError evalError) {
                 callbacks.printError(evalError.getErrorText());
             }
